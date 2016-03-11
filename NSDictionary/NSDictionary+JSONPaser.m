@@ -16,7 +16,7 @@
         return obj;
     }
     if (obj && ![obj isKindOfClass:[NSNull class]]) {
-        CKLogError(@"Class mismatch when parsing json data, class required:%@, actual class:%@, key:%@", NSStringFromClass(aClass), NSStringFromClass([obj class]), aKey);
+        NSLog(@"Class mismatch when parsing json data, class required:%@, actual class:%@, key:%@", NSStringFromClass(aClass), NSStringFromClass([obj class]), aKey);
     }
     return nil;
 }
