@@ -11,7 +11,9 @@
 @interface UIView (ProgressTip)
 
 - (void)showCenterLoadingTip;
+- (void)showCenterLoadingTipAfterDelay:(NSTimeInterval)delay;
 - (void)showCenterLoadingTipWithStatus:(NSString*)status;
+- (void)showCenterLoadingTipWithStatus:(NSString*)status afterDelay:(NSTimeInterval)delay;
 - (void)dismissCenterLoadingTip;
 
 @end

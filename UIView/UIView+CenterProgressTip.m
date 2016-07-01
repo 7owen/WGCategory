@@ -16,10 +16,18 @@ static void *UIViewCenterProgressIndicatorKey = &UIViewCenterProgressIndicatorKe
 @implementation UIView (CenterProgressTip)
 
 - (void)showCenterLoadingTip {
-    [self showCenterLoadingTipWithStatus:NSLocalizedString(@"正在载入...", nil)];
+    [self showCenterLoadingTipAfterDelay:0];
+}
+
+- (void)showCenterLoadingTipAfterDelay:(NSTimeInterval)delay {
+    [self showCenterLoadingTipWithStatus:NSLocalizedString(@"正在载入...", nil) afterDelay:0];
 }
 
 - (void)showCenterLoadingTipWithStatus:(NSString*)status {
+    [self showCenterLoadingTipWithStatus:status afterDelay:0];
+}
+
+- (void)showCenterLoadingTipWithStatus:(NSString*)status afterDelay:(NSTimeInterval)delay {
     UILabel *label = (UILabel*)objc_getAssociatedObject(self, UIViewCenterProgressLabelKey);
     UIActivityIndicatorView *indicatorView = (UIActivityIndicatorView*)objc_getAssociatedObject(self, UIViewCenterProgressIndicatorKey);
     if (!label) {
@@ -40,9 +48,17 @@ static void *UIViewCenterProgressIndicatorKey = &UIViewCenterProgressIndicatorKe
             make.right.equalTo(label.mas_left).offset(-4.f);
         }];
     }
-   
+    
     label.text = status;
     [indicatorView startAnimating];
+    if (delay != 0) {
+        label.hidden = YES;
+        indicatorView.hidden = YES;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            label.hidden = NO;
+            indicatorView.hidden = NO;
+        });
+    }
 }
 
 - (void)dismissCenterLoadingTip {
